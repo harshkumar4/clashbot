@@ -2,6 +2,7 @@ import telebot
 import coc
 from decouple import config
 
+
 bot = telebot.TeleBot(config('BOTAPI',cast=str))
 
 client = coc.login('kooolme444@gmail.com', '8299048747@love')
@@ -29,21 +30,34 @@ def handle_command(message):
     client.loop.run_until_complete(getInfo())
 
 
-@bot.message_handler(commands=['start', 'help'])
+@bot.message_handler(commands=['start'])
 def handle_command(message):
-    bot.reply_to(message, f'''I am Clash Bot and can used to fetch data related to Clash of Clans!
-Here are some following commands available yet:-
+
+    if message.chat.type == "private":
+        bot.send_message(message.chat.id, f'''
+I am Clash Bot which can used to fetch Players and Clan data of Clash of Clans!
+
+Use /help command to get list of commands.''')
     
-/getPlayerBh #<Player Id> To get a player's BH level.''')
+    else:   #For group chat
+        bot.reply_to(message, f"I am up!")
 
 
+@bot.message_handler(commands=['help'])
+def handle_command(message):
+
+    if message.chat.type == "private":
+        bot.send_message(message.chat.id, f'''
+Here is all the commands available yet - 
+
+/getPlayerBh #<Player Tag> - To get Bh Level of a player
+''')
     
+    else:   #For group chat
+        bot.reply_to(message, f"I'm kinda shy, DM for all info!")
+
+
 bot.polling()
 
 while True:
     pass
-
-# @bot.message_handler(func=lambda m:True)
-# def handle_command(message):
-#     print(getPlayerBh())
-#     bot.reply_to(message, getPlayerBh)
