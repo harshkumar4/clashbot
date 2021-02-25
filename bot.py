@@ -29,7 +29,6 @@ bot.polling()
 
 while True:
     pass
-client.close()
 
 # @bot.message_handler(func=lambda m:True)
 # def handle_command(message):
