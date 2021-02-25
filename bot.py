@@ -19,6 +19,9 @@ def handle_command(message):
 
         except IndexError:
             bot.reply_to(message, f"Incomplete Command!")
+
+        except Exception:
+            pass
             
     client.loop.run_until_complete(mainn())
     
