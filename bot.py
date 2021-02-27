@@ -2,10 +2,11 @@ import telebot
 import coc
 from decouple import config
 
+from bot_message import start_message, help_message, clan_button_message, player_button_message
 
 bot = telebot.TeleBot(config('BOTAPI',cast=str))
 
-client = coc.login('kooolme444@gmail.com', '8299048747@love')
+client = coc.login(config('EMAIL', cast=str), config('PASS', cast=str))
 
 @bot.message_handler(commands=['getPlayerBh'])
 def handle_command(message):
@@ -34,10 +35,11 @@ def handle_command(message):
 def handle_command(message):
 
     if message.chat.type == "private":
-        bot.send_message(message.chat.id, f'''
-I am Clash Bot which can used to fetch Players and Clan data of Clash of Clans!
 
-Use /help command to get list of commands.''')
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        help_button = telebot.types.InlineKeyboardButton('Help', callback_data='help')
+        keyboard.add(help_button)
+        bot.send_message(message.chat.id, start_message, reply_markup=keyboard, parse_mode='HTML')
     
     else:   #For group chat
         bot.reply_to(message, f"I am up!")
@@ -46,15 +48,42 @@ Use /help command to get list of commands.''')
 @bot.message_handler(commands=['help'])
 def handle_command(message):
 
-    if message.chat.type == "private":
-        bot.send_message(message.chat.id, f'''
-Here is all the commands available yet - 
+    if message.chat.type != "private":
+        
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        help_button = telebot.types.InlineKeyboardButton('Help', url='http://t.me/getclashbot')
+        keyboard.add(help_button)
 
-/getPlayerBh #<Player Tag> - To get Bh Level of a player
-''')
+        bot.reply_to(message, f"I'm kinda shy, DM for all info!", reply_markup=keyboard, parse_mode='HTML')
+
+
+@bot.callback_query_handler(func=lambda call: True)
+def callback_handler(call):
     
-    else:   #For group chat
-        bot.reply_to(message, f"I'm kinda shy, DM for all info!")
+    if call.data == 'help':
+
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        clan_button = telebot.types.InlineKeyboardButton('Clans', callback_data='clans')
+        player_button = telebot.types.InlineKeyboardButton('Players', callback_data='players')
+        keyboard.add(clan_button, player_button)
+
+        bot.edit_message_text(help_message, call.message.chat.id, call.message.id, reply_markup=keyboard, parse_mode='HTML')
+
+    elif call.data == 'clans':
+
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        back_button = telebot.types.InlineKeyboardButton('Back', callback_data='help',)
+        keyboard.add(back_button)
+
+        bot.edit_message_text(clan_button_message, call.message.chat.id, call.message.id, reply_markup=keyboard, parse_mode='HTML')
+    
+    elif call.data == 'players':
+
+        keyboard = telebot.types.InlineKeyboardMarkup()
+        back_button = telebot.types.InlineKeyboardButton('Back', callback_data='help')
+        keyboard.add(back_button)
+
+        bot.edit_message_text(player_button_message, call.message.chat.id, call.message.id, reply_markup=keyboard, parse_mode='HTML')
 
 
 bot.polling()

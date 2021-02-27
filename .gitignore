@@ -1,6 +1,3 @@
 .env
-main.py
-clan.csv
 Project.txt
-__pycache__/main.cpython-38.pyc
-clans.py
+/__pycache__/
