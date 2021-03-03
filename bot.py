@@ -16,7 +16,9 @@ def handle_command(message):
 
         keyboard = telebot.types.InlineKeyboardMarkup()
         help_button = telebot.types.InlineKeyboardButton('Help', callback_data='help')
-        keyboard.add(help_button)
+        Contact_button = telebot.types.InlineKeyboardButton('Contact', url='https://t.me/joinchat/VW7QJ1LJ_PXDFEpr')
+        keyboard.add(help_button, Contact_button)
+
         bot.send_message(message.chat.id, bot_message.start_message, reply_markup=keyboard, parse_mode='HTML')
     
     else:   #For group chat

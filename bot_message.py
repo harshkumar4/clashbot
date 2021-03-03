@@ -3,10 +3,12 @@ start_message = '''
 
 I am <i><b>Clash Bot</b></i> which can used to fetch Players, Clan and CWL data of Clash of Clans!
 
-It's still under development! So feedbacks will be very helpful.
+NOTICE: Development of this bot has been stoped because developers do not feel any reason to continue it furthur (No groups, No clients).
+
+Use '<b>Contact</b>' button to make contact with developers if any query.
 
 Use '<b>Help</b>' button to get list of commands.
-Use '<b>Contact</b>' button to make contact with developer <i>(Coming Soon)</i>.
+
 '''
 
 help_message = '''
